@@ -3,7 +3,7 @@
 # Click nbfs://nbhost/SystemFileSystem/Templates/Other/Dockerfile to edit this template
 
 FROM openjdk:17
-EXPOSE 8080
+EXPOSE 8085
 ADD target/test2.jar test2.jar
 ENTRYPOINT ["java","-jar","/test2"]
 CMD ["/bin/sh"]
