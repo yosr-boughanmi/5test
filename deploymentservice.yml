@@ -1,43 +1,36 @@
-version: "3.8"
-
-services:
-  sb-app:
-    image: yosrbou449/test2:latest
-    build: .
-    container_name: "mongo-demo"
-    ports:
-      - 9090:9090
-    networks:
-      - mynetwork
-    depends_on:
-      - mongodb
-
-  mongodb:
-    image: mongo:latest
-    container_name: "mongodb-service"
-    ports:
-      - "27070:27017"
-    volumes:
-      - /home:/data/db
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
-
-
-
-
-#version: "3.8"
-#services:
-#  sb-app:
-#    build: .
-#    container_name: "mongo-demo"
-#    ports:
-#      - 9090:9090
-#  mongodb:
-#    image: mongo:latest
-#    container_name: "mongodb"
-#    ports:
-#      - 27070:27017
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-demo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-demo
+  template:
+    metadata:
+      labels:
+        app: mongo-demo
+    spec:
+      containers:
+        - name: mongo-demo
+          image: yosrbou449/test2:latest
+          ports:
+            - containerPort: 9090
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://mongodb/gte-db
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-demo-service  # Corrected service name here
+spec:
+  selector:
+    app: mongo-demo
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: LoadBalancer
