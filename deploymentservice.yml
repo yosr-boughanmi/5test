@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mongo-demo
-          image: yosrbou449/test2:latest
+          image: yosrbou449/test2:latest 
           ports:
             - containerPort: 9090
           env:
@@ -34,3 +34,4 @@ spec:
       port: 9090
       targetPort: 9090
   type: LoadBalancer
+
